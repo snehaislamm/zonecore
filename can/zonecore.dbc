@@ -1,0 +1,59 @@
+VERSION "zonecore 1.0"
+
+NS_ :
+
+BS_:
+
+BU_: VCU BMS INV EVSE
+
+BO_ 257 VCU_TorqueCmd: 8 VCU
+ SG_ CRC : 0|8@1+ (1,0) [0|255] "" INV
+ SG_ Counter : 8|4@1+ (1,0) [0|15] "" INV
+ SG_ TrqFL : 12|12@1- (0.5,0) [-1024|1023.5] "Nm" INV
+ SG_ TrqFR : 24|12@1- (0.5,0) [-1024|1023.5] "Nm" INV
+ SG_ TrqRL : 36|12@1- (0.5,0) [-1024|1023.5] "Nm" INV
+ SG_ TrqRR : 48|12@1- (0.5,0) [-1024|1023.5] "Nm" INV
+ SG_ InvEnable : 60|1@1+ (1,0) [0|1] "" INV
+ SG_ SafeState : 61|3@1+ (1,0) [0|7] "" INV
+
+BO_ 512 BMS_Status: 8 BMS
+ SG_ CRC : 0|8@1+ (1,0) [0|255] "" VCU
+ SG_ Counter : 8|4@1+ (1,0) [0|15] "" VCU
+ SG_ HvState : 12|4@1+ (1,0) [0|15] "" VCU
+ SG_ PackVoltage : 16|16@1+ (0.02,0) [0|1310.7] "V" VCU
+ SG_ PackCurrent : 32|16@1- (0.05,0) [-1638.4|1638.35] "A" VCU
+ SG_ SOC : 48|8@1+ (0.5,0) [0|127.5] "%" VCU
+ SG_ FaultLevel : 56|4@1+ (1,0) [0|15] "" VCU
+ SG_ Balancing : 60|1@1+ (1,0) [0|1] "" VCU
+
+BO_ 513 BMS_Limits: 8 BMS
+ SG_ CRC : 0|8@1+ (1,0) [0|255] "" VCU
+ SG_ Counter : 8|4@1+ (1,0) [0|15] "" VCU
+ SG_ ChgCurLim : 16|16@1+ (0.1,0) [0|6553.5] "A" VCU
+ SG_ DchCurLim : 32|16@1+ (0.1,0) [0|6553.5] "A" VCU
+ SG_ TCellMax : 48|8@1+ (1,-40) [-40|215] "degC" VCU
+ SG_ TCellMin : 56|8@1+ (1,-40) [-40|215] "degC" VCU
+
+BO_ 768 EVSE_Status: 8 EVSE
+ SG_ CRC : 0|8@1+ (1,0) [0|255] "" VCU
+ SG_ Counter : 8|4@1+ (1,0) [0|15] "" VCU
+ SG_ EvseState : 12|4@1+ (1,0) [0|15] "" VCU
+ SG_ PresentVoltage : 16|16@1+ (0.1,0) [0|6553.5] "V" VCU
+ SG_ PresentCurrent : 32|16@1+ (0.1,0) [0|6553.5] "A" VCU
+ SG_ MaxCurrent : 48|10@1+ (1,0) [0|1023] "A" VCU
+ SG_ IsolationOk : 58|1@1+ (1,0) [0|1] "" VCU
+ SG_ EStop : 59|1@1+ (1,0) [0|1] "" VCU
+
+BO_ 769 VCU_ChargeReq: 8 VCU
+ SG_ CRC : 0|8@1+ (1,0) [0|255] "" EVSE
+ SG_ Counter : 8|4@1+ (1,0) [0|15] "" EVSE
+ SG_ ChargeState : 12|4@1+ (1,0) [0|15] "" EVSE
+ SG_ TargetVoltage : 16|16@1+ (0.1,0) [0|6553.5] "V" EVSE
+ SG_ TargetCurrent : 32|16@1+ (0.1,0) [0|6553.5] "A" EVSE
+ SG_ ChargeEnable : 48|1@1+ (1,0) [0|1] "" EVSE
+ SG_ ChargeComplete : 49|1@1+ (1,0) [0|1] "" EVSE
+ SG_ SocDisplay : 56|8@1+ (0.5,0) [0|127.5] "%" EVSE
+
+CM_ BO_ 257 "Per-wheel motor torque command, quad-motor. E2E protected (CRC-8 J1850 + alive counter).";
+CM_ BO_ 768 "DC EVSE status, abstracted from DIN 70121 / ISO 15118-2 DC messages.";
+VAL_ 768 EvseState 0 "NOT_READY" 1 "READY" 2 "CABLE_CHECK_OK" 3 "PRECHARGE" 4 "CHARGING" 5 "STOPPED" 6 "FAULT" ;
